@@ -1,3 +1,5 @@
+*.zip
+*.rds
 *.txt
 *.csv
 .Rproj.user
