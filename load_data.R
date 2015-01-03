@@ -33,12 +33,28 @@ for(i in 46:49) { # d[45] is through 2009
 write.table(paste0("http://s3.amazonaws.com/fl-crash/", d[50:length(d)]), file = "new_files.txt",
             row.names = F, quote = F)
 
+# 2010 is a bit funky in that FDOT split their data format
+# in this year, the first halt matches from 2005, and the later
+# through 2013 (at least).
+
+d_2010_a <- fread(getURL("http://s3.amazonaws.com/fl-crash/2010/oldform/non_redacted_2010_20101231_event_20110304.txt"),
+                  verbose = T,
+                  header = T)
+d_2010_b <- fread(getURL("http://s3.amazonaws.com/fl-crash/2010/newform/non_redacted_2010_20101231_event_20110914.csv"),
+                  verbose = T,
+                  header = T)
+saveRDSfast(d_2010_a, "2010_event_a.rds")
+saveRDSfast(d_2010_b, "2010_event_b.rds")
+
+d_2010_a <- fread(getURL("http://s3.amazonaws.com/fl-crash/2010/oldform/non_redacted_2010_20101231_dot_20110304.txt"),
+                  verbose = T,
+                  header = T)
+saveRDSfast(d_2010_a, "2010_dot_a.rds") # this is necessary to join with events in order to find the location
+# of crashes.
+
 # wget -vi new_files.txt
 d <- list.files(".")[grepl('2011', list.files(".")) | grepl('2012', list.files(".")) | grepl('2013', list.files("."))]
 d <- d[grepl(".csv", d)]
-# d <- d[grepl("2011_2011", d)]
-d <- list.files(".")[grepl('2010', list.files(".")) &
-                       grepl('.txt', list.files("."))]
 
 for(i in 1:length(d)) { # d[45] is through 2009
   df <- read.table(d[i],
@@ -53,3 +69,7 @@ for(i in 1:length(d)) { # d[45] is through 2009
   saveRDSfast(df, file = paste0(full_name, ".rds"))
   print(paste(i, "out of", length(d)))
 }
+
+
+
+
