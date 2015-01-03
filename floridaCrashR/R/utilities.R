@@ -1,6 +1,6 @@
 return_raw_files <- function() {
-  data <- xmlParse("s3list.xml")
-  xml_data <- xmlToList(data)
+  data <- XML::xmlParse("s3list.xml") # please email cpeter9@gmail.com for this file.
+  xml_data <- XML::xmlToList(data)
   d <- unlist(do.call(rbind, xml_data[-c(1:5)]))
   d <- d[grepl(".txt", d) | grepl(".csv", d)]
 
