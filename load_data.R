@@ -1,4 +1,7 @@
-source("utilities.R")
+devtools::install("floridaCrashR")
+devtools::load_all("floridaCrashR")
+library(floridaCrashR)
+
 d <- return_raw_files()
 
 for(i in 1:45 { # d[45] is through 2009

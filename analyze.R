@@ -1,4 +1,3 @@
-source("utilities.R")
 d <- list()
 event_files <- list.files(".")[grepl("event", list.files(".")) & grepl("rds", list.files("."))]
 for(i in 1:length(event_files)) {
