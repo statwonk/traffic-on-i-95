@@ -1,3 +1,22 @@
+import_data_files_into_r <- function(type = NULL) {
+  if(is.null(type)) {
+    stop("Must be of type event, passenger, or dot")
+  }
+  d <- list()
+  event_files <- list.files(".")[grepl("event", list.files(".")) & grepl("rds", list.files("."))]
+  for(i in 1:length(event_files)) {
+    d[[i]] <- readRDS(event_files[i])
+    for(j in 1:length(d[[i]])) {
+      if(is.factor(d[[i]][ , j])) {
+        d[[i]][ , j] <- as.character(d[[i]][ , j])
+      }
+    }
+    print(i)
+  }
+
+  return(d)
+}
+
 return_raw_files <- function() {
   data <- XML::xmlParse("s3list.xml") # please email cpeter9@gmail.com for this file.
   xml_data <- XML::xmlToList(data)

@@ -1,15 +1,10 @@
-d <- list()
-event_files <- list.files(".")[grepl("event", list.files(".")) & grepl("rds", list.files("."))]
-for(i in 1:length(event_files)) {
-  d[[i]] <- readRDS(event_files[i])
-  print(i)
-}
+options(stringsAsFactors = F)
+devtools::install("floridaCrashR")
+devtools::load_all("floridaCrashR")
+library(floridaCrashR)
 
-g1 <- as.data.table(as.data.frame(do.call(rbind, lapply(1:6, function(x) { d[[x]] }))))
-g2 <- as.data.table(do.call(rbind, lapply(7:10, function(x) {
-  d[[x]]$crash_date_time <- as.character(d[[x]]$crash_date_time)
-  d[[x]]
-})))
+d <- import_data_files_into_r(type = "event")
+d <- stack_data(d)
 
 g1_roads <- list()
 road_files <- list.files(".")[grepl("dot", list.files(".")) & grepl("rds", list.files("."))]
